@@ -1,4 +1,20 @@
-from game.character import Character
+from game.character import warrior, wizard
 
-player = Character("Ahmet")
-print(f"Player : {player.name} Health: {player.health}, Level: {player.level}, XP: {player.experience}")
+def start_game():
+    print("----Welcome to the console arena!----\n")
+    print("Console Arena Begins!\n")
+    
+
+    player1 = warrior(name="try")
+    
+    print("-" * 30) # Ayraç
+    
+    player2 = wizard(name="Merlin")
+    
+    print("\n Characters created:")
+    player1.check_status()
+    player2.check_status()
+
+
+if __name__ == "__main__":
+    start_game()
