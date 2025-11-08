@@ -32,9 +32,22 @@ class GameEngine:
         while self.player1.is_alive and self.player2.is_alive:
             print(f"\n--- ROUND {self.round} ---")
             
-            # Attacker's turn
-            input(f"It's {current_attacker.name}'s turn. Press Enter to attack...")
-            current_attacker.attack(current_defender)
+            current_attacker.tick_turn()
+            current_attacker.check_status()
+            current_defender.check_status()
+            
+            # 2. Oyuncudan saldırı seçmesini iste
+            print(f"\nIt's {current_attacker.name}'s turn.")
+            # Karakterden seçimini alıyoruz (get_attack_choice)
+            choice = current_attacker.get_attack_choice() 
+            
+            # 3. Seçime göre saldır
+            if choice == "1":
+                current_attacker.attack(current_defender) # Normal saldırı
+            elif choice == "2":
+                current_attacker.special_attack(current_defender) # Özel saldırı
+            
+            # --- GÜNCELLEME BİTTİ ---
             
             time.sleep(0.5) # Wait 0.5 seconds
 
@@ -43,7 +56,7 @@ class GameEngine:
                 self.end_battle(winner=current_attacker, loser=current_defender)
                 break
             
-            
+            # Sıra değiştir
             current_attacker, current_defender = current_defender, current_attacker
             self.round += 1
         

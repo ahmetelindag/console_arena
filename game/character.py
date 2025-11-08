@@ -13,10 +13,42 @@ class Character:
         self.attack_power = attack_power
         self.defense = defense
         self.is_alive = True # Tracks whether the character is alive
+        self.special_cooldown = 0
 
     def check_status(self):
         """Prints the current status of the character."""
         print(f"-- {self.name} | LVL: {self.level} | Health: {self.health}/{self.max_health} | XP: {self.experience}/{self.experience_to_nextlevel} --")
+        
+
+    def tick_turn(self):
+    
+        if self.special_cooldown > 0:
+         self.special_cooldown -= 1
+         print(f"({self.name}'s special attack recharges in {self.special_cooldown} turns)")
+
+    def special_attack(self, target):
+    
+        print(f"\n{self.name} doesn't have a special attack!")
+
+    def get_attack_choice(self):
+    
+   
+        if self.special_cooldown > 0:
+         print(f"Special Attack is on cooldown! ({self.special_cooldown} turns left)")
+         return "1" # Özel saldırı beklemedeyse, otomatik olarak normal saldırı seç
+        else:
+            while choice not in ["1", "2"]:
+                choice = input(f"Choose your move (1: Normal Attack, 2: Special Attack): ")
+                if choice == "2":
+                    print(f"{self.name} prepares a special attack! ")
+                elif choice == "1": 
+                    print(f"{self.name} prepares a normal attack! ")
+                else:
+                    print("invalid choice ")
+                    
+                    
+                return choice
+
 
     def attack(self, target):
         # Attacks the target character. Damage is calculated with a dice roll.
@@ -90,6 +122,18 @@ class Warrior(Character):
                          defense=settings.WARRIOR_DEFENSE)
         self.experience_to_nextlevel = settings.WARRIOR_XP_TARGET 
         print(f"Warrior {self.name} joined the arena with high health and defense!")
+
+    def special_attack(self, target):
+
+        #power strike 2x attack 2x cooldown 
+        print(f"\n{self.name} uses POWER STRIKE!")
+        damage = (self.attack_power * 2) + roll_dice(4) 
+
+        print(f"A devastating blow deals {damage} damage!")
+        target.take_damage(damage)
+
+        # Cooldown
+        self.special_cooldown = 2 # 2 tur bekleme süresi
 
 class Wizard(Character):
     # Wizard Class: High attack power, low health.
